@@ -50,265 +50,248 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBody: true,
-      body: Stack(
-        children: [
-          // Animated Background with Glowing Orbs
-          AnimatedBuilder(
-            animation: Listenable.merge([
-              _controller1,
-              _controller2,
-              _controller3,
-            ]),
-            builder: (context, child) {
-              return Container(
-                decoration: const BoxDecoration(
+    return SafeArea(
+      child: Scaffold(
+        extendBody: true,
+        body: Stack(
+          children: [
+            // Animated Background with Glowing Orbs
+            AnimatedBuilder(
+              animation: Listenable.merge([
+                _controller1,
+                _controller2,
+                _controller3,
+              ]),
+              builder: (context, child) {
+                return Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Color(0xFF0a0a0a),
+                        Color(0xFF1a1a1a),
+                        Color(0xFF0a0a0a),
+                      ],
+                    ),
+                  ),
+                  child: Stack(
+                    children: [
+                      // Glowing Orb 1 - Top Right (attached to right edge)
+                      Positioned(
+                        top: -50 + (_controller1.value * 30),
+                        right: -150,
+                        child: Container(
+                          width: 400,
+                          height: 400,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: RadialGradient(
+                              colors: [
+                                const Color(0xFFD2691E).withOpacity(0.35),
+                                const Color(0xFFCD853F).withOpacity(0.2),
+                                Colors.transparent,
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      // Glowing Orb 2 - Bottom Right (attached to right edge)
+                      Positioned(
+                        bottom: -100 + (_controller2.value * 40),
+                        right: -120,
+                        child: Container(
+                          width: 380,
+                          height: 380,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: RadialGradient(
+                              colors: [
+                                const Color(0xFFD2691E).withOpacity(0.3),
+                                const Color(0xFFCD853F).withOpacity(0.18),
+                                Colors.transparent,
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      // Glowing Orb 3 - Left Side (attached to left edge)
+                      Positioned(
+                        top: 200 + (_controller3.value * 50),
+                        left: -140,
+                        child: Container(
+                          width: 380,
+                          height: 380,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: RadialGradient(
+                              colors: [
+                                const Color(0xFFD2691E).withOpacity(0.32),
+                                const Color(0xFFCD853F).withOpacity(0.2),
+                                Colors.transparent,
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+            // Scrollable Content
+            SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Header with Menu Icon
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(50),
+                            border: Border.all(
+                              color: Colors.white.withOpacity(0.2),
+                              width: 1,
+                            ),
+                          ),
+                          child: Icon(
+                            Icons.menu,
+                            color: Colors.white,
+                            size: 22,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Text(
+                      "Today's overview",
+                      style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+
+                    // Nutrition Overview Card
+                    _buildNutritionOverviewCard(),
+                    const SizedBox(height: 16),
+
+                    // Keep up the streak Card
+                    _buildStreakCard(),
+                    const SizedBox(height: 16),
+
+                    // Weight Progress Card
+                    _buildWeightProgressCard(),
+                    const SizedBox(height: 16),
+
+                    const SizedBox(height: 16),
+                    _buildGlassCard(
+                      title: 'Profile',
+                      subtitle: 'View your profile',
+                      icon: Icons.person,
+                      color: const Color(0xFFf1580a),
+                    ),
+                    const SizedBox(height: 100), // Extra space for bottom nav
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+        // Floating Bottom Navigation Bar
+        floatingActionButton: Container(
+          margin: EdgeInsets.only(top: 40),
+          width: 65,
+          height: 65,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.white.withOpacity(0.2), width: 2),
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [const Color(0xFFf1580a), const Color(0xFFf1580a)],
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFFf1580a).withOpacity(0.4),
+                blurRadius: 15,
+                spreadRadius: 1,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () {
+                // Add action
+              },
+              borderRadius: BorderRadius.circular(50),
+              child: const Center(
+                child: Icon(Icons.add, size: 32, color: Colors.white),
+              ),
+            ),
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        bottomNavigationBar: Container(
+          margin: const EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(40),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.3),
+                blurRadius: 20,
+                spreadRadius: 0,
+                offset: const Offset(0, 10),
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(40),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+              child: Container(
+                height: 75,
+                decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      Color(0xFF0a0a0a),
-                      Color(0xFF1a1a1a),
-                      Color(0xFF0a0a0a),
+                      const Color(0xFFE74E1F).withOpacity(0.1),
+                      const Color(0xFFD5633A).withOpacity(0.2),
                     ],
                   ),
+                  borderRadius: BorderRadius.circular(40),
+                  border: Border.all(
+                    color: Colors.white.withOpacity(0.2),
+                    width: 1.2,
+                  ),
                 ),
-                child: Stack(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    // Glowing Orb 1 - Top Right (attached to right edge)
-                    Positioned(
-                      top: -50 + (_controller1.value * 30),
-                      right: -150,
-                      child: Container(
-                        width: 400,
-                        height: 400,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          gradient: RadialGradient(
-                            colors: [
-                              const Color(0xFFD2691E).withOpacity(0.35),
-                              const Color(0xFFCD853F).withOpacity(0.2),
-                              Colors.transparent,
-                            ],
-                          ),
-                        ),
-                      ),
+                    _buildNavItemWithLabel(Icons.home_rounded, 'Home', 0),
+                    _buildNavItemWithLabel(
+                      Icons.description_outlined,
+                      'Diary',
+                      1,
                     ),
-                    // Glowing Orb 2 - Bottom Right (attached to right edge)
-                    Positioned(
-                      bottom: -100 + (_controller2.value * 40),
-                      right: -120,
-                      child: Container(
-                        width: 380,
-                        height: 380,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          gradient: RadialGradient(
-                            colors: [
-                              const Color(0xFFD2691E).withOpacity(0.3),
-                              const Color(0xFFCD853F).withOpacity(0.18),
-                              Colors.transparent,
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    // Glowing Orb 3 - Left Side (attached to left edge)
-                    Positioned(
-                      top: 200 + (_controller3.value * 50),
-                      left: -140,
-                      child: Container(
-                        width: 380,
-                        height: 380,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          gradient: RadialGradient(
-                            colors: [
-                              const Color(0xFFD2691E).withOpacity(0.32),
-                              const Color(0xFFCD853F).withOpacity(0.2),
-                              Colors.transparent,
-                            ],
-                          ),
-                        ),
-                      ),
+                    const SizedBox(width: 56), // Space for FAB
+                    _buildNavItemWithLabel(Icons.restaurant_menu, 'Diet', 2),
+                    _buildNavItemWithLabel(
+                      Icons.bar_chart_rounded,
+                      'Progress',
+                      3,
                     ),
                   ],
                 ),
-              );
-            },
-          ),
-          // Scrollable Content
-          SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 60),
-                  // Header with Menu Icon
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(50),
-                          border: Border.all(
-                            color: Colors.white.withOpacity(0.2),
-                            width: 1,
-                          ),
-                        ),
-                        child: Icon(Icons.menu, color: Colors.white, size: 22),
-                      ),
-                    ],
-                  ),
-                  const Text(
-                    "Today's overview",
-                    style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-
-                  // Nutrition Overview Card
-                  _buildNutritionOverviewCard(),
-                  const SizedBox(height: 16),
-
-                  // Keep up the streak Card
-                  _buildStreakCard(),
-                  const SizedBox(height: 16),
-                  _buildGlassCard(
-                    title: 'Analytics',
-                    subtitle: 'View your performance',
-                    icon: Icons.analytics,
-                    color: const Color(0xFFf1580a),
-                  ),
-                  const SizedBox(height: 16),
-                  _buildGlassCard(
-                    title: 'Messages',
-                    subtitle: '5 new messages',
-                    icon: Icons.message,
-                    color: const Color(0xFFf1580a),
-                  ),
-                  const SizedBox(height: 16),
-                  _buildGlassCard(
-                    title: 'Settings',
-                    subtitle: 'Manage your account',
-                    icon: Icons.settings,
-                    color: const Color(0xFFf1580a),
-                  ),
-                  const SizedBox(height: 16),
-                  _buildGlassCard(
-                    title: 'Notifications',
-                    subtitle: '3 new updates',
-                    icon: Icons.notifications,
-                    color: const Color(0xFFf1580a),
-                  ),
-                  const SizedBox(height: 16),
-                  _buildGlassCard(
-                    title: 'Profile',
-                    subtitle: 'View your profile',
-                    icon: Icons.person,
-                    color: const Color(0xFFf1580a),
-                  ),
-                  const SizedBox(height: 100), // Extra space for bottom nav
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-      // Floating Bottom Navigation Bar
-      floatingActionButton: Container(
-        margin: EdgeInsets.only(top: 40),
-        width: 65,
-        height: 65,
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.white.withOpacity(0.2), width: 2),
-          shape: BoxShape.circle,
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [const Color(0xFFf1580a), const Color(0xFFf1580a)],
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: const Color(0xFFf1580a).withOpacity(0.4),
-              blurRadius: 15,
-              spreadRadius: 1,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: () {
-              // Add action
-            },
-            borderRadius: BorderRadius.circular(50),
-            child: const Center(
-              child: Icon(Icons.add, size: 32, color: Colors.white),
-            ),
-          ),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: Container(
-        margin: const EdgeInsets.all(16.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(40),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.3),
-              blurRadius: 20,
-              spreadRadius: 0,
-              offset: const Offset(0, 10),
-            ),
-          ],
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(40),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-            child: Container(
-              height: 75,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    const Color(0xFFE74E1F).withOpacity(0.1),
-                    const Color(0xFFD5633A).withOpacity(0.2),
-                  ],
-                ),
-                borderRadius: BorderRadius.circular(40),
-                border: Border.all(
-                  color: Colors.white.withOpacity(0.2),
-                  width: 1.2,
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _buildNavItemWithLabel(Icons.home_rounded, 'Home', 0),
-                  _buildNavItemWithLabel(
-                    Icons.description_outlined,
-                    'Diary',
-                    1,
-                  ),
-                  const SizedBox(width: 56), // Space for FAB
-                  _buildNavItemWithLabel(Icons.restaurant_menu, 'Diet', 2),
-                  _buildNavItemWithLabel(
-                    Icons.bar_chart_rounded,
-                    'Progress',
-                    3,
-                  ),
-                ],
               ),
             ),
           ),
@@ -796,6 +779,105 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
   }
 
+  Widget _buildWeightProgressCard() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(25),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.07),
+            borderRadius: BorderRadius.circular(25),
+            border: Border.all(
+              color: Colors.white.withOpacity(0.15),
+              width: 1.2,
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Title
+              const Text(
+                'Weight Progress',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 24),
+
+              // Chart Area
+              SizedBox(
+                height: 220,
+                child: CustomPaint(
+                  size: const Size(double.infinity, 220),
+                  painter: WeightChartPainter(),
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // Time Period Stats
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.05),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: Colors.white.withOpacity(0.1),
+                    width: 1,
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    _buildWeightStat('7 days', '+0.35kg', isPositive: true),
+                    _buildWeightStat('30 days', '-2.1kg', isPositive: false),
+                    _buildWeightStat('90 days', '-3.5kg', isPositive: false),
+                    _buildWeightStat('120 days', '-9.2kg', isPositive: false),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildWeightStat(
+    String period,
+    String weight, {
+    required bool isPositive,
+  }) {
+    return Column(
+      children: [
+        Text(
+          period,
+          style: TextStyle(
+            fontSize: 12,
+            color: isPositive
+                ? const Color(0xFFf1580a)
+                : Colors.white.withOpacity(0.6),
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          weight,
+          style: TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.bold,
+            color: isPositive
+                ? const Color(0xFFf1580a)
+                : const Color(0xFF7ED957),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildGlassCard({
     required String title,
     required String subtitle,
@@ -868,4 +950,142 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       ),
     );
   }
+}
+
+// Custom Painter for Weight Progress Chart
+class WeightChartPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.5
+      ..color = const Color(0xFFf1580a);
+
+    final fillPaint = Paint()
+      ..style = PaintingStyle.fill
+      ..shader = LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          const Color(0xFFf1580a).withOpacity(0.3),
+          const Color(0xFFf1580a).withOpacity(0.2),
+          const Color(0xFFf1580a).withOpacity(0.0),
+        ],
+      ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
+
+    final gridPaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1
+      ..color = Colors.white.withOpacity(0.1);
+
+    // Draw horizontal grid lines (dotted)
+    final gridLinePositions = [0.2, 0.5, 0.8]; // Positions for 72k, 71k, 70k
+    for (var pos in gridLinePositions) {
+      final y = size.height * pos;
+      _drawDottedLine(canvas, Offset(40, y), Offset(size.width, y), gridPaint);
+    }
+
+    // Draw Y-axis labels
+    final textPainter = TextPainter(
+      textDirection: TextDirection.ltr,
+      textAlign: TextAlign.right,
+    );
+
+    final labels = ['72k', '71k', '70k', '0'];
+    final positions = [0.2, 0.5, 0.8, 1.0];
+
+    for (var i = 0; i < labels.length; i++) {
+      textPainter.text = TextSpan(
+        text: labels[i],
+        style: TextStyle(color: Colors.white.withOpacity(0.4), fontSize: 12),
+      );
+      textPainter.layout();
+      textPainter.paint(canvas, Offset(0, size.height * positions[i] - 20));
+    }
+
+    // Draw X-axis labels
+    final xLabels = ['M', 'T', 'W', 'Th', 'F', 'S', 'S'];
+    final xSpacing = (size.width - 60) / (xLabels.length - 1);
+
+    for (var i = 0; i < xLabels.length; i++) {
+      textPainter.text = TextSpan(
+        text: xLabels[i],
+        style: TextStyle(color: Colors.white.withOpacity(0.5), fontSize: 12),
+      );
+      textPainter.layout();
+      textPainter.paint(
+        canvas,
+        Offset(40 + (i * xSpacing) - (textPainter.width / 2), size.height - 20),
+      );
+    }
+
+    // Chart data points (simulating the wave pattern from the image)
+    final dataPoints = [
+      0.54, // M (going up)
+      0.34, // T (peak)
+      0.54, // W (dip)
+      0.64, // Th
+      0.44, // F (small peak)
+      0.34, // S (going down)
+      0.54, // S (lowest)
+    ];
+
+    // Create path for the line
+    final path = Path();
+    final fillPath = Path();
+
+    final chartHeight = size.height - 40;
+    final startX = 50.0;
+
+    path.moveTo(startX, chartHeight * dataPoints[0]);
+    fillPath.moveTo(startX, chartHeight);
+    fillPath.lineTo(startX, chartHeight * dataPoints[0]);
+
+    for (var i = 0; i < dataPoints.length; i++) {
+      final x = startX + (i * xSpacing);
+      final y = chartHeight * dataPoints[i];
+
+      if (i == 0) {
+        path.moveTo(x, y);
+      } else {
+        // Create smooth curves using quadratic bezier
+        final prevX = startX + ((i - 1) * xSpacing);
+        final prevY = chartHeight * dataPoints[i - 1];
+        final controlX = (prevX + x) / 2;
+
+        path.quadraticBezierTo(controlX, prevY, x, y);
+        fillPath.quadraticBezierTo(controlX, prevY, x, y);
+      }
+    }
+
+    // Close the fill path
+    fillPath.lineTo(startX + ((dataPoints.length - 1) * xSpacing), chartHeight);
+    fillPath.close();
+
+    // Draw the filled area first
+    canvas.drawPath(fillPath, fillPaint);
+
+    // Draw the line on top
+    canvas.drawPath(path, paint);
+  }
+
+  // Helper method to draw dotted lines
+  void _drawDottedLine(Canvas canvas, Offset start, Offset end, Paint paint) {
+    const double dashWidth = 5;
+    const double dashSpace = 5;
+    double distance = (end - start).distance;
+    double dashCount = distance / (dashWidth + dashSpace);
+
+    for (int i = 0; i < dashCount; i++) {
+      double startX = start.dx + ((end.dx - start.dx) / dashCount) * i;
+      double startY = start.dy + ((end.dy - start.dy) / dashCount) * i;
+      double endX = start.dx + ((end.dx - start.dx) / dashCount) * (i + 0.5);
+      double endY = start.dy + ((end.dy - start.dy) / dashCount) * (i + 0.5);
+
+      canvas.drawLine(Offset(startX, startY), Offset(endX, endY), paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
