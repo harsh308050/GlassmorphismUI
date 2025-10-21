@@ -190,7 +190,14 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     _buildWeightProgressCard(),
                     const SizedBox(height: 16),
 
+                    // Today's Nutritional Analysis Card
+                    _buildNutritionalAnalysisCard(),
                     const SizedBox(height: 16),
+
+                    // Exercise Card
+                    _buildExerciseCard(),
+                    const SizedBox(height: 16),
+
                     _buildGlassCard(
                       title: 'Profile',
                       subtitle: 'View your profile',
@@ -206,9 +213,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         ),
         // Floating Bottom Navigation Bar
         floatingActionButton: Container(
-          margin: EdgeInsets.only(top: 40),
-          width: 65,
-          height: 65,
+          margin: EdgeInsets.only(top: 40, right: 10),
+          width: 55,
+          height: 55,
           decoration: BoxDecoration(
             border: Border.all(color: Colors.white.withOpacity(0.2), width: 2),
             shape: BoxShape.circle,
@@ -878,6 +885,270 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
   }
 
+  Widget _buildNutritionalAnalysisCard() {
+    return CustomPaint(
+      painter: DashedBorderPainter(),
+      child: Container(
+        margin: const EdgeInsets.all(3),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.07),
+          borderRadius: BorderRadius.circular(22),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(22),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Header with icon and title
+                  Row(
+                    children: [
+                      Icon(Icons.bolt, color: Color(0xFFf1580a), size: 30),
+                      const SizedBox(width: 5),
+                      const Text(
+                        "Today's Nutritional Analysis",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Content box
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: RichText(
+                      text: TextSpan(
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.white.withOpacity(0.8),
+                          height: 1.5,
+                        ),
+                        children: [
+                          const TextSpan(text: "You haven't eaten any "),
+                          const TextSpan(
+                            text: "iron",
+                            style: TextStyle(
+                              color: Color(0xFFf1580a),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const TextSpan(text: " today.\nConsider adding "),
+                          const TextSpan(
+                            text: "beans",
+                            style: TextStyle(
+                              color: Color(0xFFf1580a),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const TextSpan(text: " to your dinner."),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildExerciseCard() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(25),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.07),
+            borderRadius: BorderRadius.circular(25),
+            border: Border.all(
+              color: Colors.white.withOpacity(0.15),
+              width: 1.2,
+            ),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Left Side - Title and Dumbbell Image
+              Expanded(
+                flex: 4,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text(
+                      'Exercise',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    Image.asset(
+                      'assets/WeightsImage.png',
+                      width: 100,
+                      height: 100,
+                      fit: BoxFit.contain,
+                    ),
+                  ],
+                ),
+              ), // Right Side - Calories Box and Button
+              Expanded(
+                flex: 6,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Calories Burnt Box
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.all(14),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.05),
+                        borderRadius: BorderRadius.circular(18),
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.1),
+                          width: 1,
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Image.asset(
+                                'assets/FLAME.png',
+                                width: 24,
+                                height: 24,
+                                color: const Color(0xFFf1580a),
+                              ),
+                              const SizedBox(width: 6),
+                              Flexible(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Row(
+                                    children: [
+                                      const Text(
+                                        '551',
+                                        style: TextStyle(
+                                          fontSize: 28,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        'kcal',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.white.withOpacity(0.9),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            'Calories Burnt Today',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white.withOpacity(0.6),
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 12),
+
+                    // Logging Button
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFFf1580a), Color(0xFFff7a3d)],
+                        ),
+                        borderRadius: BorderRadius.circular(25),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFFf1580a).withOpacity(0.4),
+                            blurRadius: 10,
+                            spreadRadius: 0,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () {
+                            // Add logging exercise action
+                          },
+                          borderRadius: BorderRadius.circular(25),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 12,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                  size: 18,
+                                ),
+                                const SizedBox(width: 6),
+                                Flexible(
+                                  child: Text(
+                                    'Logging an Exercise',
+                                    style: const TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildGlassCard({
     required String title,
     required String subtitle,
@@ -1083,6 +1354,65 @@ class WeightChartPainter extends CustomPainter {
       double endY = start.dy + ((end.dy - start.dy) / dashCount) * (i + 0.5);
 
       canvas.drawLine(Offset(startX, startY), Offset(endX, endY), paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+// Custom Painter for Dashed Gradient Border
+class DashedBorderPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final rect = Rect.fromLTWH(0, 0, size.width, size.height);
+    final borderRadius = 30.0;
+    final rrect = RRect.fromRectAndRadius(rect, Radius.circular(borderRadius));
+
+    final paint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2
+      ..shader = const LinearGradient(
+        colors: [
+          Color.fromRGBO(241, 88, 10, 0.7), // Orange
+          Color.fromRGBO(191, 129, 154, 0.6), // Purple
+          Color.fromRGBO(137, 128, 235, 0.6), // Blue
+        ],
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+      ).createShader(rect);
+
+    final path = Path()..addRRect(rrect);
+
+    // Draw dashed border
+    _drawDashedPath(canvas, path, paint);
+  }
+
+  void _drawDashedPath(Canvas canvas, Path path, Paint paint) {
+    const dashWidth = 10.0;
+    const dashSpace = 8.0;
+
+    final pathMetrics = path.computeMetrics();
+
+    for (final metric in pathMetrics) {
+      double distance = 0.0;
+      bool draw = true;
+
+      while (distance < metric.length) {
+        final length = draw ? dashWidth : dashSpace;
+        final nextDistance = distance + length;
+
+        if (draw) {
+          final extractPath = metric.extractPath(
+            distance,
+            nextDistance > metric.length ? metric.length : nextDistance,
+          );
+          canvas.drawPath(extractPath, paint);
+        }
+
+        distance = nextDistance;
+        draw = !draw;
+      }
     }
   }
 
