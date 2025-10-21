@@ -198,12 +198,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     _buildExerciseCard(),
                     const SizedBox(height: 16),
 
-                    _buildGlassCard(
-                      title: 'Profile',
-                      subtitle: 'View your profile',
-                      icon: Icons.person,
-                      color: const Color(0xFFf1580a),
-                    ),
+                    // Your Groceries Card
+                    _buildGroceriesCard(),
                     const SizedBox(height: 100), // Extra space for bottom nav
                   ],
                 ),
@@ -990,12 +986,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Text(
-                      'Exercise',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Text(
+                        'Exercise',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -1019,7 +1018,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       alignment: Alignment.centerLeft,
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.05),
+                        // color: Colors.white.withOpacity(0.05),
                         borderRadius: BorderRadius.circular(18),
                         border: Border.all(
                           color: Colors.white.withOpacity(0.1),
@@ -1149,71 +1148,118 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     );
   }
 
-  Widget _buildGlassCard({
-    required String title,
-    required String subtitle,
-    required IconData icon,
-    required Color color,
-  }) {
+  Widget _buildGroceriesCard() {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.circular(25),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
         child: Container(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(15),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.15),
-            borderRadius: BorderRadius.circular(20),
+            color: Colors.white.withOpacity(0.07),
+            borderRadius: BorderRadius.circular(25),
             border: Border.all(
-              color: Colors.white.withOpacity(0.2),
-              width: 1.5,
+              color: Colors.white.withOpacity(0.15),
+              width: 1.2,
             ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 10,
-                spreadRadius: 2,
-              ),
-            ],
           ),
           child: Row(
             children: [
-              Container(
-                padding: const EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  color: color.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Icon(icon, color: Colors.white, size: 30),
-              ),
-              const SizedBox(width: 16),
               Expanded(
+                flex: 6,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontSize: 18,
+                    const Text(
+                      'Your Groceries',
+                      style: TextStyle(
+                        fontSize: 24,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 12),
                     Text(
-                      subtitle,
+                      'Turn your weekly diet into\na shopping list with no effort.',
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 12,
                         color: Colors.white.withOpacity(0.7),
+                        height: 1.5,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+
+                    // Generate Shopping List Button
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFFf1580a), Color(0xFFff7a3d)],
+                        ),
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFFf1580a).withOpacity(0.4),
+                            blurRadius: 12,
+                            spreadRadius: 0,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () {
+                            // Generate shopping list action
+                          },
+                          borderRadius: BorderRadius.circular(30),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 14,
+                              vertical: 10,
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                  size: 14,
+                                ),
+                                const SizedBox(width: 3),
+                                Flexible(
+                                  child: Text(
+                                    'Generate Shopping List',
+                                    style: const TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white,
+                                    ),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
-              Icon(
-                Icons.arrow_forward_ios,
-                color: Colors.white.withOpacity(0.5),
-                size: 18,
+
+              const SizedBox(width: 16),
+
+              // Right Side - Shopping Bag Image
+              Expanded(
+                flex: 3,
+                child: Image.asset(
+                  'assets/ShoppingBagImage.png',
+                  fit: BoxFit.cover,
+                  height: 150,
+                  width: 150,
+                ),
               ),
             ],
           ),
